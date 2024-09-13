@@ -4,88 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ارسال پیام به ربات تلگرام</title>
-    <link rel="stylesheet" href="styles.css">
     <style>
         body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    padding: 20px;
-}
-
-.container {
-    max-width: 500px;
-    margin: auto;
-    background: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-input, textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-button {
-    padding: 10px;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #218838;
-}
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>ارسال پیام به ربات تلگرام</h1>
-        <input type="text" id="botId" placeholder="شناسه ربات تلگرام" />
+        <input type="text" id="botId" placeholder="توکن ربات تلگرام" />
+        <input type="text" id="chatId" placeholder="شناسه چت (مثلاً @username یا chat_id)" />
         <textarea id="message" placeholder="متن پیام"></textarea>
         <button id="sendBtn">ارسال پیام</button>
     </div>
     <script>
-document.getElementById('sendBtn').addEventListener('click', function() {
-    const botId = document.getElementById('botId').value;
-    const message = document.getElementById('message').value;
+        document.getElementById('sendBtn').addEventListener('click', function() {
+            const botToken = document.getElementById('botId').value; // توکن ربات
+            const chatId = document.getElementById('chatId').value; // شناسه چت
+            const message = document.getElementById('message').value; // متن پیام
 
-    if (!botId || !message) {
-        alert('لطفاً شناسه ربات و متن پیام را وارد کنید.');
-        return;
-    }
+            if (!botToken || !chatId || !message) {
+                alert('لطفاً توکن ربات، شناسه چت و متن پیام را وارد کنید.');
+                return;
+            }
 
-    const url = `https://api.telegram.org/bot${botId}/sendMessage`;
-    const data = {
-        chat_id: botId,
-        text: message
-    };
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+            const data = {
+                chat_id: chatId,
+                text: message
+            };
 
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.ok) {
-            alert('پیام با موفقیت ارسال شد!');
-        } else {
-            alert('خطا در ارسال پیام: ' + data.description);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('خطا در ارسال پیام.');
-    });
-});
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    alert('پیام با موفقیت ارسال شد!');
+                } else {
+                    alert('خطا در ارسال پیام: ' + data.description);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('خطا در ارسال پیام.');
+            });
+        });
     </script>
 </body>
 </html>
